@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,6 @@ import {
   Button,
 } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
-import * as Notifications from 'expo-notifications';
 
 const restaurants = [
   {
@@ -84,37 +83,9 @@ const restaurants = [
   },
 ];
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-  }),
-});
-
 export default function RestaurantsScreen() {
   const [showMap, setShowMap] = useState(false);
   const { theme } = useTheme();
-
-  useEffect(() => {
-    (async () => {
-      const { status } = await Notifications.getPermissionsAsync();
-      if (status !== 'granted') {
-        await Notifications.requestPermissionsAsync();
-      }
-    })();
-  }, []);
-
-  const sendNotification = async () => {
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: 'Status do Pedido 📦',
-        body: 'Seu pedido está sendo preparado e será entregue em breve!',
-        data: { orderId: 123 },
-      },
-      trigger: { seconds: 2 },
-    });
-  };
 
   return (
     <View
@@ -126,7 +97,7 @@ export default function RestaurantsScreen() {
       <TouchableOpacity
         style={[styles.button, { backgroundColor: theme.buttonColor }]}
         onPress={() => setShowMap(!showMap)}>
-        <Text style={[styles.buttonText, { color: theme.buttonTextColor }]}>
+        <Text style={[styles.buttonText, { color: theme.color }]}>
           {showMap ? 'Ocultar Mapa' : 'Ver Mapa com Restaurantes'}
         </Text>
       </TouchableOpacity>
@@ -161,7 +132,6 @@ export default function RestaurantsScreen() {
         )}
         style={styles.list}
       />
-      <Button title="Status do Pedido" onPress={sendNotification} />
     </View>
   );
 }
