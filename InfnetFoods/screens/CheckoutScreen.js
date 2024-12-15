@@ -1,15 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
+import * as Notifications from 'expo-notifications';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 export default function CheckoutScreen({ route, navigation }) {
   const { theme } = useTheme();
-
   const { cartItems, totalPrice } = route.params;
-
   const [address, setAddress] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');
   const [errors, setErrors] = useState({});
+
+useEffect(() => {
+    (async () => {
+      const { status } = await Notifications.getPermissionsAsync();
+      if (status !== 'granted') {
+        await Notifications.requestPermissionsAsync();
+      }
+    })();
+  }, []);
+
+  const sendNotification = async () => {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: 'Status do Pedido 📦',
+        body: 'Seu pedido está sendo preparado e será entregue em breve!',
+        data: { orderId: 123 },
+      },
+      trigger: { seconds: 2 },
+    });
+  };
 
   const validateForm = () => {
     const newErrors = {};
@@ -27,6 +54,7 @@ export default function CheckoutScreen({ route, navigation }) {
     if (validateForm()) {
       alert('Pedido realizado com sucesso!');
       navigation.navigate('Home');
+      sendNotification();
     }
   };
 
