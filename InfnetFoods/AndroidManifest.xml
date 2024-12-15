@@ -1,0 +1,6 @@
+<application>
+
+  <meta-data
+    android:name="com.google.android.maps.v2.API_KEY"
+    android:value="c9htVNOAvnOIMQmBqGg2uA_Ihrw=" />
+</application>
