@@ -23,14 +23,6 @@ Uma aplicação mobile de delivery de comida, desenvolvida utilizando **React Na
 - **CheckoutScreen**: Tela de finalização de compra com opções de pagamento.
 - **SettingsScreen**: Configurações da conta e preferências.
 
-## Tecnologias Utilizadas
-
-- **React Native**: Framework para desenvolvimento mobile.
-- **Expo**: Plataforma para simplificar o desenvolvimento e testes.
-- **React Navigation**: Navegação entre telas.
-- **Context API**: Gerenciamento de estado global para temas e autenticação.
-- **FlatList e Animated**: Exibição de listas e animações suaves.
-
 ## Estrutura do Projeto
 
 ```plaintext
